@@ -20,11 +20,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/repos")
 public class GithubController {
 
     private static String baseUrl = "https://api.github.com/repos/";
-    //TODO add logging
 
     @Autowired
     RestTemplate restTemplate;

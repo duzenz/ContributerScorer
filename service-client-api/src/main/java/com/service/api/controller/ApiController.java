@@ -6,20 +6,21 @@ import com.service.api.models.RepoRank;
 import com.service.api.models.UserStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class ApiController {
 
     private final RestTemplate restTemplate;
+    //TODO get Base Urls from common
 
     @Autowired
     public ApiController(RestTemplate restTemplate) {
@@ -29,9 +30,9 @@ public class ApiController {
     @GetMapping(path = "/rank/{repoName}")
     public List<RepoRank> getRepoRanking(@PathVariable String repoName) {
         ResponseEntity<List<RepoRank>> response = restTemplate.exchange(
-                "http://localhost:8762/scorer/score/api/" + repoName,
+                "http://localhost:8000/scorer/api/" + repoName,
                 HttpMethod.GET,
-                getAuthenticationHeaders(),
+                getHeaders(),
                 new ParameterizedTypeReference<List<RepoRank>>() {
                 });
         return response.getBody();
@@ -40,21 +41,20 @@ public class ApiController {
     @GetMapping(path = "/contributor/{repoName}")
     public List<UserStats> getContributorList(@PathVariable String repoName) {
         ResponseEntity<List<UserStats>> response = restTemplate.exchange(
-                "http://localhost:8762/repo/repos/api/" + repoName + "/contributions",
+                "http://localhost:8000/repo/api/" + repoName + "/contributions",
                 HttpMethod.GET,
-                getAuthenticationHeaders(),
+                getHeaders(),
                 new ParameterizedTypeReference<List<UserStats>>() {
                 });
         return response.getBody();
     }
 
-
     @GetMapping(path = "/review/{repoName}")
     public List<CodeReview> getCodeReviewList(@PathVariable String repoName) {
         ResponseEntity<List<CodeReview>> response = restTemplate.exchange(
-                "http://localhost:8762/repo/repos/api/" + repoName + "/reviews",
+                "http://localhost:8000/repo/api/" + repoName + "/reviews",
                 HttpMethod.GET,
-                getAuthenticationHeaders(),
+                getHeaders(),
                 new ParameterizedTypeReference<List<CodeReview>>() {
                 });
         return response.getBody();
@@ -63,38 +63,16 @@ public class ApiController {
     @GetMapping(path = "/comment/{repoName}")
     public List<CodeReviewComment> getCodeReviewCommentList(@PathVariable String repoName) {
         ResponseEntity<List<CodeReviewComment>> response = restTemplate.exchange(
-                "http://localhost:8762/repo/repos/api/" + repoName + "/comments",
+                "http://localhost:8000/repo/api/" + repoName + "/comments",
                 HttpMethod.GET,
-                getAuthenticationHeaders(),
+                getHeaders(),
                 new ParameterizedTypeReference<List<CodeReviewComment>>() {
                 });
         return response.getBody();
     }
 
-    private String getAuthenticationToken() {
-        String username = "admin";
-        String password = "12345";
-        String requestBody = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"}";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
-
-        String authUri = "http://localhost:8762/auth/";
-        ResponseEntity<String> response = restTemplate.exchange(authUri, HttpMethod.POST, entity, String.class);
-        for (Map.Entry<String, List<String>> entry : response.getHeaders().entrySet()) {
-            if (entry.getKey().equals("Authorization")) {
-                return entry.getValue().get(0);
-            }
-        }
-        return "";
-    }
-
-    private HttpEntity getAuthenticationHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", getAuthenticationToken());
-        return new HttpEntity<>("", headers);
+    private HttpEntity getHeaders() {
+        return null;
     }
 
 }

@@ -11,7 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/score")
 public class ScorerController {
 
     private final RestTemplate restTemplate;
@@ -40,7 +38,7 @@ public class ScorerController {
         statMap.clear();
 
         ResponseEntity<List<UserStats>> response = restTemplate.exchange(
-                "http://localhost:9300/repos/api/" + repo + "/contributions",
+                "http://localhost:8000/repo/api/" + repo + "/contributions",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<UserStats>>() {
@@ -56,7 +54,7 @@ public class ScorerController {
 
 
         ResponseEntity<List<CodeReview>> response1 = restTemplate.exchange(
-                "http://localhost:9300/repos/api/" + repo + "/reviews",
+                "http://localhost:8000/repo/api/" + repo + "/reviews",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<CodeReview>>() {
@@ -73,7 +71,7 @@ public class ScorerController {
         }
 
         ResponseEntity<List<CodeReviewComment>> response2 = restTemplate.exchange(
-                "http://localhost:9300/repos/api/" + repo + "/comments",
+                "http://localhost:8000/repo/api/" + repo + "/comments",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<CodeReviewComment>>() {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/repos/api")
+@RequestMapping("/api")
 public class ApiExposeController {
 
     @Autowired
