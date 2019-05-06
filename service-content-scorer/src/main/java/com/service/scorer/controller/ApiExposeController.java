@@ -21,4 +21,10 @@ public class ApiExposeController {
     public List<RepoRank> getRepoRanking(@PathVariable String repoName) {
         return repoRankRepository.findTop20ByRepoNameOrderByScoreDesc(repoName);
     }
+
+    @GetMapping(path = "/processed/repos")
+    public List<String> getProcessedRepos() {
+        return repoRankRepository.findDistinctRepos();
+    }
+
 }

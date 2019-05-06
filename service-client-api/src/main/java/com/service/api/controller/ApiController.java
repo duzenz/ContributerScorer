@@ -71,6 +71,17 @@ public class ApiController {
         return response.getBody();
     }
 
+    @GetMapping(path = "/distinct/repos")
+    public List<String> getProcessedRepos() {
+        ResponseEntity<List<String>> response = restTemplate.exchange(
+                "http://localhost:8000/scorer/api/processed/repos",
+                HttpMethod.GET,
+                getHeaders(),
+                new ParameterizedTypeReference<List<String>>() {
+                });
+        return response.getBody();
+    }
+
     private HttpEntity getHeaders() {
         return null;
     }

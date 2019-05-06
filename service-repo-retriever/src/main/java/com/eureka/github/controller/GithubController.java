@@ -10,12 +10,13 @@ import com.eureka.github.models.entity.UserStats;
 import com.eureka.github.repository.CodeReviewCommentRepository;
 import com.eureka.github.repository.CodeReviewRepository;
 import com.eureka.github.repository.UserStatsRepository;
-import com.service.common.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -23,7 +24,9 @@ import java.util.List;
 @RestController
 public class GithubController {
 
-    private static String baseUrl = Constant.GITHUB_API_REPO_URL;
+    private static String GITHUB_API_BASE_URL = "https://api.github.com/";
+
+    private static String baseUrl = GITHUB_API_BASE_URL + "repos/";
 
     @Autowired
     RestTemplate restTemplate;
