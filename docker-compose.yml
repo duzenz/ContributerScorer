@@ -1,0 +1,47 @@
+version: '2'
+services:
+  eureka:
+    image: zafer/service-eureka-server:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - 8761:8761/tcp
+
+  zuul:
+    image: zafer/service-eureka-zuul:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - 8000:8000/tcp
+    depends_on:
+      - eureka
+
+  repo-retriever:
+    image: zafer/service-repo-retriever:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - 8010:8010/tcp
+    depends_on:
+      - eureka
+      - zuul
+
+  content-scorer:
+    image: zafer/service-content-scorer:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - 8020:8020/tcp
+    depends_on:
+      - eureka
+      - zuul
+
+  client-api:
+    image: zafer/service-client-api:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - 8030:8030/tcp
+    depends_on:
+      - eureka
+      - zuul

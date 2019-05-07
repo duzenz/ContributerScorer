@@ -1,9 +1,22 @@
 <template>
-    <ol>
-        <li v-for="(record, index) in recordList" :key="index">
-            {{record.userId}}
-        </li>
-    </ol>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Repo Name</th>
+            <th scope="col">User Id</th>
+            <th scope="col">Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(record, index) in recordList" :key="index">
+            <th scope="row">{{index + 1}}</th>
+            <td>{{record.repoName}}</td>
+            <td>{{record.userId}}</td>
+            <td>{{record.score}}</td>
+        </tr>
+        </tbody>
+    </table>
 </template>
 
 <script>
@@ -23,7 +36,7 @@
 
         methods: {
             fetchData: function () {
-                $http.get('/contributor/' + this.$route.params.id)
+                $http.get('/rank/' + this.$route.params.id)
                     .then(resp => {
                         this.recordList = resp.data;
                     })

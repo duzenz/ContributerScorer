@@ -1,11 +1,22 @@
 <template>
-    <ol>
-        <li v-for="(record, index) in recordList" :key="index">
-            <router-link :to="{ name: 'detail', params: { id: record }}">
-                {{record}}
-            </router-link>
-        </li>
-    </ol>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Repo Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(record, index) in recordList" :key="index">
+            <th scope="row">{{index + 1}}</th>
+            <td>
+                <router-link :to="{ name: 'detail', params: { id: record }}">
+                    {{record}}
+                </router-link>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </template>
 
 <script>

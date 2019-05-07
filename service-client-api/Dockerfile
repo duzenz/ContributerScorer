@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-EXPOSE 8040
+EXPOSE 8030
 
 ADD /target/*.jar app.jar
 
