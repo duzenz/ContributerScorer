@@ -28,6 +28,11 @@ mvn clean install
 docker build -t zafer/service-client-api:latest .
 cd ..
 
+####
+cd client
+docker build -t zafer/service-client:latest .
+cd..
+
 docker image prune
 
 #docker-machine ip

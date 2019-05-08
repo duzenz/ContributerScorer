@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,11 +21,32 @@ import java.util.List;
 public class ApiController {
 
     private final RestTemplate restTemplate;
-    //TODO get Base Urls from common
 
     @Autowired
     public ApiController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+    }
+
+    @PostMapping(path = "/repo/{owner}/{repo}")
+    public ResponseEntity<String> retrieveRepo(@PathVariable String owner, @PathVariable String repo) {
+        restTemplate.exchange(
+                "http://localhost:8000/repo/retrieve/" + owner + "/" + repo,
+                HttpMethod.POST,
+                getHeaders(),
+                new ParameterizedTypeReference<String>() {
+                });
+        return ResponseEntity.ok("Successful");
+    }
+
+    @PostMapping(path = "/repo/score/{repo}")
+    public ResponseEntity<String> scoreRepo(@PathVariable String repo) {
+        restTemplate.exchange(
+                "http://localhost:8000/scorer/" + repo,
+                HttpMethod.POST,
+                getHeaders(),
+                new ParameterizedTypeReference<String>() {
+                });
+        return ResponseEntity.ok("Successful");
     }
 
     @GetMapping(path = "/rank/{repoName}")

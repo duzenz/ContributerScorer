@@ -45,3 +45,14 @@ services:
     depends_on:
       - eureka
       - zuul
+
+  client-web:
+    image: zafer/service-client:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - 8080:80/tcp
+    depends_on:
+      - repo-retriever
+      - content-scorer
+      - client-api

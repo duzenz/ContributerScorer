@@ -1,7 +1,5 @@
 package com.service.scorer.models;
 
-import javax.persistence.*;
-
 public class UserStats {
 
     private int id;

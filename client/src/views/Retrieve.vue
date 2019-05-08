@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h3>Retrieve Repository</h3>
         <div class="form-group">
             <label for="repositoryName">Repository Name</label>
             <input type="text" class="form-control" id="repositoryName" v-model="repositoryName"
@@ -30,26 +31,23 @@
             };
         },
 
-        /*created: function () {
-            this.fetchData();
-        },*/
-
         methods: {
-            fetchData: function () {
-                $http.get('distinct/repos')
-                    .then(resp => {
-                        this.recordList = resp.data;
-                    })
-            },
             getRepo: function () {
-                    $http.post('distinct/repos')
+                if (this.repositoryName === "" || this.repositoryUser === "") {
+                    alert("Values can not be null");
+                } else {
+                    const url = '/repo/' + this.repositoryUser + '/' + this.repositoryName;
+                    $http.post(url)
                         .then(resp => {
-                            this.recordList = resp.data;
-                        })
-                //console.log("zafer")// `event` is the native DOM event
-                /* eslint-disable no-console */
-                console.log("zafer");
-                /* eslint-enable no-console */
+                            alert("Retrieve repository is ok");
+                            this.repositoryUser = "";
+                            this.repositoryName = "";
+                        }).catch((err) => {
+                        alert("Retrieve repository is ok");
+                        this.repositoryUser = "";
+                        this.repositoryName = "";
+                    });
+                }
             }
         }
     })
