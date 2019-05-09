@@ -1,9 +1,6 @@
 package com.service.api.controller;
 
-import com.service.api.models.CodeReview;
-import com.service.api.models.CodeReviewComment;
-import com.service.api.models.RepoRank;
-import com.service.api.models.UserStats;
+import com.service.api.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -103,6 +100,18 @@ public class ApiController {
                 });
         return response.getBody();
     }
+
+    @GetMapping(path = "/account/{id}")
+    public User getAccount(@PathVariable int id) {
+        ResponseEntity<User> response = restTemplate.exchange(
+                "http://localhost:8000/account/"+ id,
+                HttpMethod.GET,
+                getHeaders(),
+                new ParameterizedTypeReference<User>() {
+                });
+        return response.getBody();
+    }
+
 
     private HttpEntity getHeaders() {
         return null;

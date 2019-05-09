@@ -14,7 +14,11 @@
             <tr v-for="(record, index) in recordList" :key="index">
                 <th scope="row">{{index + 1}}</th>
                 <td>{{record.repoName}}</td>
-                <td>{{record.userId}}</td>
+                    <td>
+                    <router-link :to="{ name: 'user', params: { id: record.userId }}">
+                        {{record.userId}}
+                    </router-link>
+                </td>
                 <td>{{record.score}}</td>
             </tr>
             </tbody>

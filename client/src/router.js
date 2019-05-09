@@ -4,7 +4,7 @@ import Repos from "./views/Repos.vue";
 import Detail from "./views/Detail.vue";
 import Retrieve from "./views/Retrieve";
 import Score from "./views/Score";
-
+import User from "./views/User";
 
 Vue.use(Router);
 
@@ -19,6 +19,11 @@ const router = new Router({
             path: "/detail/:id",
             name: "detail",
             component: Detail
+        },
+        {
+            path:"/user/:id",
+            name:"user",
+            component: User
         },
         {
             path: "/retrieve",

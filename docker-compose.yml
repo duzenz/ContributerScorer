@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   eureka:
     image: zafer/service-eureka-server:latest
@@ -25,6 +25,7 @@ services:
     depends_on:
       - eureka
       - zuul
+      - db
 
   content-scorer:
     image: zafer/service-content-scorer:latest
@@ -56,3 +57,16 @@ services:
       - repo-retriever
       - content-scorer
       - client-api
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9000:8080
