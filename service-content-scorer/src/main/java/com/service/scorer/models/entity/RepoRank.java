@@ -1,10 +1,11 @@
 package com.service.scorer.models.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "REPO_RANK")
 @Entity
-public class RepoRank {
+public class RepoRank implements Serializable {
 
     @Id
     @GeneratedValue

@@ -36,3 +36,4 @@ cd..
 docker image prune
 
 #docker-machine ip
+#docker rm $(docker ps -a -q)
