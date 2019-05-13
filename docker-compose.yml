@@ -15,7 +15,6 @@ services:
     ports:
       - 8020:8020/tcp
     environment:
-      CONTENT_SCORER_BACKEND: http://localhost:8000
       SPRING_REDIS_HOST: localhost
       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/scorer?useUnicode=true&characterEncoding=UTF8&useSSL=false
 
@@ -30,13 +29,9 @@ services:
       - 8030
     deploy:
       replicas: 2
-    environment:
-      CONTENT_SCORER_BACKEND: http://localhost:8000
 
   client-web:
     image: zafer/service-client:latest
-    stdin_open: true
-    tty: true
     ports:
       - 8080:80/tcp
     depends_on:
