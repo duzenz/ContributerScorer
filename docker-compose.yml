@@ -13,6 +13,9 @@ services:
     tty: true
     ports:
       - 8000:8000/tcp
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka
+      CONTENT_SCORER_FRONTEND: http://localhost:8081
     depends_on:
       - eureka
 
@@ -22,6 +25,9 @@ services:
     tty: true
     ports:
       - 8010:8010/tcp
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/scorer?useUnicode=true&characterEncoding=UTF8&useSSL=false
     depends_on:
       - eureka
       - zuul
@@ -33,6 +39,23 @@ services:
     tty: true
     ports:
       - 8020:8020/tcp
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka
+      CONTENT_SCORER_BACKEND: http://localhost:8000
+      SPRING_REDIS_HOST: localhost
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/scorer?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    depends_on:
+      - eureka
+      - zuul
+
+  user-account:
+    image: zafer/service-user-account:latest
+    stdin_open: true
+    tty: true
+    ports:
+      - 8050:8050/tcp
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka
     depends_on:
       - eureka
       - zuul
@@ -45,6 +68,9 @@ services:
       - 8030
     deploy:
       replicas: 2
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://localhost:8761/eureka
+      CONTENT_SCORER_BACKEND: http://localhost:8000
     depends_on:
       - eureka
       - zuul
