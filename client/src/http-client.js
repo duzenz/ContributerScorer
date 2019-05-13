@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const $http = axios.create({
-    baseURL: "http://localhost:8040/api/",
+    baseURL: "http://192.168.99.100:8040/api/",
     timeout: 5000
 });
 

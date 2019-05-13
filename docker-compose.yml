@@ -4,31 +4,29 @@ services:
   repo-retriever:
     image: zafer/service-repo-retriever:latest
     ports:
-      - 8010:8010/tcp
+      - 8010:8010
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/scorer?useUnicode=true&characterEncoding=UTF8&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://192.168.99.100:3306/scorer?useUnicode=true&characterEncoding=UTF8&useSSL=false
     depends_on:
       - db
 
   content-scorer:
     image: zafer/service-content-scorer:latest
     ports:
-      - 8020:8020/tcp
+      - 8020:8020
     environment:
-      SPRING_REDIS_HOST: localhost
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/scorer?useUnicode=true&characterEncoding=UTF8&useSSL=false
+      SPRING_REDIS_HOST: 192.168.99.100
+      SPRING_DATASOURCE_URL: jdbc:mysql://192.168.99.100:3306/scorer?useUnicode=true&characterEncoding=UTF8&useSSL=false
 
   user-account:
     image: zafer/service-user-account:latest
     ports:
-      - 8050:8050/tcp
+      - 8030:8030
 
   client-api:
     image: zafer/service-client-api:latest
     ports:
-      - 8030
-    deploy:
-      replicas: 2
+      - 8040:8040
 
   client-web:
     image: zafer/service-client:latest
