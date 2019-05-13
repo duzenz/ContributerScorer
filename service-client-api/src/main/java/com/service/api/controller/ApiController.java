@@ -7,19 +7,24 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class ApiController {
 
-    @Value("${content.scorer.backend}")
-    private String contentScorerFrontendUrl;
+    @Value("${repo.api.url}")
+    private String repoApiUrl;
+
+    @Value("${score.api.url}")
+    private String scoreApiUrl;
+
+    @Value("${user.api.url}")
+    private String userApiUrl;
 
     private final RestTemplate restTemplate;
 
@@ -31,7 +36,7 @@ public class ApiController {
     @PostMapping(path = "/repo/{owner}/{repo}")
     public ResponseEntity<String> retrieveRepo(@PathVariable String owner, @PathVariable String repo) {
         restTemplate.exchange(
-                contentScorerFrontendUrl + "/repo/retrieve/" + owner + "/" + repo,
+                repoApiUrl + "/retrieve/" + owner + "/" + repo,
                 HttpMethod.POST,
                 getHeaders(),
                 new ParameterizedTypeReference<String>() {
@@ -42,7 +47,7 @@ public class ApiController {
     @PostMapping(path = "/repo/score/{repo}")
     public ResponseEntity<String> scoreRepo(@PathVariable String repo) {
         restTemplate.exchange(
-                contentScorerFrontendUrl + "/scorer/" + repo,
+                scoreApiUrl + "/" + repo,
                 HttpMethod.POST,
                 getHeaders(),
                 new ParameterizedTypeReference<String>() {
@@ -53,7 +58,7 @@ public class ApiController {
     @GetMapping(path = "/rank/{repoName}")
     public List<RepoRank> getRepoRanking(@PathVariable String repoName) {
         ResponseEntity<List<RepoRank>> response = restTemplate.exchange(
-                contentScorerFrontendUrl + "/scorer/api/" + repoName,
+                scoreApiUrl + "/api/" + repoName,
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<RepoRank>>() {
@@ -64,7 +69,7 @@ public class ApiController {
     @GetMapping(path = "/contributor/{repoName}")
     public List<UserStats> getContributorList(@PathVariable String repoName) {
         ResponseEntity<List<UserStats>> response = restTemplate.exchange(
-                contentScorerFrontendUrl + "/repo/api/" + repoName + "/contributions",
+                repoApiUrl + "/api/" + repoName + "/contributions",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<UserStats>>() {
@@ -75,7 +80,7 @@ public class ApiController {
     @GetMapping(path = "/review/{repoName}")
     public List<CodeReview> getCodeReviewList(@PathVariable String repoName) {
         ResponseEntity<List<CodeReview>> response = restTemplate.exchange(
-                contentScorerFrontendUrl + "/repo/api/" + repoName + "/reviews",
+                repoApiUrl + "/api/" + repoName + "/reviews",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<CodeReview>>() {
@@ -86,7 +91,7 @@ public class ApiController {
     @GetMapping(path = "/comment/{repoName}")
     public List<CodeReviewComment> getCodeReviewCommentList(@PathVariable String repoName) {
         ResponseEntity<List<CodeReviewComment>> response = restTemplate.exchange(
-                contentScorerFrontendUrl + "/repo/api/" + repoName + "/comments",
+                repoApiUrl + "/api/" + repoName + "/comments",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<CodeReviewComment>>() {
@@ -97,7 +102,7 @@ public class ApiController {
     @GetMapping(path = "/distinct/repos")
     public List<String> getProcessedRepos() {
         ResponseEntity<List<String>> response = restTemplate.exchange(
-                contentScorerFrontendUrl + "/scorer/api/processed/repos",
+                scoreApiUrl + "/api/processed/repos",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<String>>() {
@@ -108,14 +113,13 @@ public class ApiController {
     @GetMapping(path = "/account/{id}")
     public User getAccount(@PathVariable int id) {
         ResponseEntity<User> response = restTemplate.exchange(
-                contentScorerFrontendUrl + "/account/"+ id,
+                userApiUrl + "/" + id,
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<User>() {
                 });
         return response.getBody();
     }
-
 
     private HttpEntity getHeaders() {
         return null;
