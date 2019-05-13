@@ -6,6 +6,7 @@ import com.service.scorer.models.UserStats;
 import com.service.scorer.models.entity.RepoRank;
 import com.service.scorer.repository.RepoRankRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ import java.util.Map;
 
 @RestController
 public class ScorerController {
+
+    @Value("${content.scorer.backend}")
+    private String contentScorerFrontendUrl;
 
     private final RestTemplate restTemplate;
 
@@ -38,7 +42,7 @@ public class ScorerController {
         statMap.clear();
 
         ResponseEntity<List<UserStats>> response = restTemplate.exchange(
-                "http://localhost:8000/repo/api/" + repo + "/contributions",
+                contentScorerFrontendUrl + "/repo/api/" + repo + "/contributions",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<UserStats>>() {
@@ -54,7 +58,7 @@ public class ScorerController {
 
 
         ResponseEntity<List<CodeReview>> response1 = restTemplate.exchange(
-                "http://localhost:8000/repo/api/" + repo + "/reviews",
+                contentScorerFrontendUrl + "/repo/api/" + repo + "/reviews",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<CodeReview>>() {
@@ -71,7 +75,7 @@ public class ScorerController {
         }
 
         ResponseEntity<List<CodeReviewComment>> response2 = restTemplate.exchange(
-                "http://localhost:8000/repo/api/" + repo + "/comments",
+                contentScorerFrontendUrl + "/repo/api/" + repo + "/comments",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<CodeReviewComment>>() {

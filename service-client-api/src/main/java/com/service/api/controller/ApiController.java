@@ -2,6 +2,7 @@ package com.service.api.controller;
 
 import com.service.api.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,9 @@ import java.util.List;
 @RestController
 public class ApiController {
 
+    @Value("${content.scorer.backend}")
+    private String contentScorerFrontendUrl;
+
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -27,7 +31,7 @@ public class ApiController {
     @PostMapping(path = "/repo/{owner}/{repo}")
     public ResponseEntity<String> retrieveRepo(@PathVariable String owner, @PathVariable String repo) {
         restTemplate.exchange(
-                "http://localhost:8000/repo/retrieve/" + owner + "/" + repo,
+                contentScorerFrontendUrl + "/repo/retrieve/" + owner + "/" + repo,
                 HttpMethod.POST,
                 getHeaders(),
                 new ParameterizedTypeReference<String>() {
@@ -38,7 +42,7 @@ public class ApiController {
     @PostMapping(path = "/repo/score/{repo}")
     public ResponseEntity<String> scoreRepo(@PathVariable String repo) {
         restTemplate.exchange(
-                "http://localhost:8000/scorer/" + repo,
+                contentScorerFrontendUrl + "/scorer/" + repo,
                 HttpMethod.POST,
                 getHeaders(),
                 new ParameterizedTypeReference<String>() {
@@ -49,7 +53,7 @@ public class ApiController {
     @GetMapping(path = "/rank/{repoName}")
     public List<RepoRank> getRepoRanking(@PathVariable String repoName) {
         ResponseEntity<List<RepoRank>> response = restTemplate.exchange(
-                "http://localhost:8000/scorer/api/" + repoName,
+                contentScorerFrontendUrl + "/scorer/api/" + repoName,
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<RepoRank>>() {
@@ -60,7 +64,7 @@ public class ApiController {
     @GetMapping(path = "/contributor/{repoName}")
     public List<UserStats> getContributorList(@PathVariable String repoName) {
         ResponseEntity<List<UserStats>> response = restTemplate.exchange(
-                "http://localhost:8000/repo/api/" + repoName + "/contributions",
+                contentScorerFrontendUrl + "/repo/api/" + repoName + "/contributions",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<UserStats>>() {
@@ -71,7 +75,7 @@ public class ApiController {
     @GetMapping(path = "/review/{repoName}")
     public List<CodeReview> getCodeReviewList(@PathVariable String repoName) {
         ResponseEntity<List<CodeReview>> response = restTemplate.exchange(
-                "http://localhost:8000/repo/api/" + repoName + "/reviews",
+                contentScorerFrontendUrl + "/repo/api/" + repoName + "/reviews",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<CodeReview>>() {
@@ -82,7 +86,7 @@ public class ApiController {
     @GetMapping(path = "/comment/{repoName}")
     public List<CodeReviewComment> getCodeReviewCommentList(@PathVariable String repoName) {
         ResponseEntity<List<CodeReviewComment>> response = restTemplate.exchange(
-                "http://localhost:8000/repo/api/" + repoName + "/comments",
+                contentScorerFrontendUrl + "/repo/api/" + repoName + "/comments",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<CodeReviewComment>>() {
@@ -93,7 +97,7 @@ public class ApiController {
     @GetMapping(path = "/distinct/repos")
     public List<String> getProcessedRepos() {
         ResponseEntity<List<String>> response = restTemplate.exchange(
-                "http://localhost:8000/scorer/api/processed/repos",
+                contentScorerFrontendUrl + "/scorer/api/processed/repos",
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<List<String>>() {
@@ -104,7 +108,7 @@ public class ApiController {
     @GetMapping(path = "/account/{id}")
     public User getAccount(@PathVariable int id) {
         ResponseEntity<User> response = restTemplate.exchange(
-                "http://localhost:8000/account/"+ id,
+                contentScorerFrontendUrl + "/account/"+ id,
                 HttpMethod.GET,
                 getHeaders(),
                 new ParameterizedTypeReference<User>() {
