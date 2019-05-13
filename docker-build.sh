@@ -22,6 +22,11 @@ mvn clean install
 docker build -t zafer/service-content-scorer:latest .
 cd ..
 
+cd service-user-account
+mvn clean install
+docker build -t zafer/service-user-account:latest .
+cd ..
+
 ####
 cd service-client-api
 mvn clean install

@@ -42,7 +42,9 @@ services:
     stdin_open: true
     tty: true
     ports:
-      - 8030:8030/tcp
+      - 8030
+    deploy:
+      replicas: 2
     depends_on:
       - eureka
       - zuul
@@ -58,24 +60,24 @@ services:
       - content-scorer
       - client-api
 
-    db:
-      image: mysql
-      command: --default-authentication-plugin=mysql_native_password
-      restart: always
-      environment:
-        MYSQL_ROOT_PASSWORD: admin
-        MYSQL_DATABASE: scorer
-      ports:
-        - 3306:3306
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: scorer
+    ports:
+      - 3306:3306
 
-    adminer:
-      image: adminer
-      restart: always
-      ports:
-        - 9000:8080
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9000:8080
 
-    redis:
-      image: redis
-      ports:
-        - 6379:6379
-      restart: always
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    restart: always
